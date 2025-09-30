@@ -8,9 +8,10 @@
 
 - **雲端與 IaC:** GCP/AWS, Terraform
 - **容器化與編排:** Docker, Kubernetes (K8s), Helm
-- **數據串流:** Kafka, Spark Streaming
+- **數據串流與工作流:** Kafka, Spark Streaming, **Airflow**
+- **資料庫:** **MongoDB**, Elasticsearch
 - **應用程式:** Python, PySpark
-- **監控與日誌:** Prometheus, Grafana, ELK Stack (Elasticsearch, Logstash/Filebeat, Kibana)
+- **監控與日誌:** Prometheus, Grafana, ELK Stack
 - **自動化:** GitHub Actions
 
 ## 開發階段 (Phases)
@@ -19,7 +20,7 @@
 
 - [ ] **任務 1.1:** 使用 Terraform 撰寫腳本，在雲端平台 (GCP/AWS) 建立一個託管的 Kubernetes 叢集 (GKE/EKS)。
 - [ ] **任務 1.2:** 使用 Helm 在 K8s 叢集中部署一個高可用的 Kafka 叢集。
-- [ ] **任務 1.3:** 撰寫 Python 應用 `producer.py`，設定排程（例如每 10 秒）呼叫 PTX 運輸平台 API，獲取公車即時數據。
+- [ ] **任務 1.3:** **使用 Airflow 建立排程**，定時執行 Python 應用 `producer.py` 獲取公車即時數據。
 - [ ] **任務 1.4:** 將 `producer.py` 獲取到的數據發送到 Kafka 的 `bus-locations` Topic。
 
 ### Phase 2: 即時處理核心 (Real-time Processing Core)
@@ -36,6 +37,7 @@
 - [ ] **任務 3.2:** 當 `alerting_consumer.py` 收到訊息時，發出一個格式化的通知 (到 Console 或 Slack)。
 - [ ] **任務 3.3:** 將 `alerting_consumer.py` 打包成 Docker Image，並作為 K8s `Deployment` 部署。
 - [ ] **任務 3.4:** 使用 Helm 部署 ELK Stack，並設定 Logstash/Filebeat 從 `bus-updates` Topic 收集數據，存入 Elasticsearch 以供歸檔查詢。
+- [ ] **任務 3.5:** **將到站警示存入 MongoDB** 以供未來應用查詢。
 
 ### Phase 4: 維運、監控與自動化 (Operations, Monitoring & Automation)
 
