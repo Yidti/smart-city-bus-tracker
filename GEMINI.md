@@ -32,7 +32,7 @@
         3.  安裝 Minikube CLI。
         4.  安裝 Helm CLI。
 
-- [ ] **任務 1.2: 使用 Docker Compose 建立核心數據服務**
+- [x] **任務 1.2: 使用 Docker Compose 建立核心數據服務**
     - **技術細節:**
         - **Docker Compose:** 用於定義和運行多容器 Docker 應用程式的工具。透過一個 `docker-compose.yml` 檔案，我們可以一鍵啟動所有後台基礎服務。
         - **為什麼用 Docker Compose？** 對於 Kafka、Airflow、MongoDB 這類有狀態的複雜服務，使用 Docker Compose 在本地管理比直接在 Minikube 中部署更簡單、更快速，也能將「基礎服務」和我們自己開發的「應用服務」進行有效隔離。
@@ -40,7 +40,23 @@
         1.  在專案根目錄建立一個 `docker-compose.yml` 檔案。
         2.  在檔案中，分別定義 `services` 給 Zookeeper, Kafka, Airflow (包含 webserver, scheduler, database), MongoDB, Prometheus, Grafana, ELK Stack。
         3.  為每個服務配置好映像檔版本、端口映射 (ports) 和儲存卷 (volumes)。
-        4.  執行 `docker-compose up -d` 在背景啟動所有服務。
+        4.  在第一次啟動前，需要先初始化 Airflow。開啟一個新的終端機，執行以下指令：
+            - **初始化資料庫:**
+              ```bash
+              docker compose run --rm airflow db init
+              ```
+            - **建立管理員帳號 (使用者名稱/密碼: admin/admin):**
+              ```bash
+              docker compose run --rm airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com
+              ```
+        5.  執行 `docker compose up -d` 在背景啟動所有服務。
+    - **執行紀錄與除錯 (Execution & Debugging Log):**
+        - **問題 (Problem):** 在執行 `docker compose run` 初始化 Airflow 時，遇到 `no space left on device` 錯誤。
+        - **原因 (Cause):** 本機硬碟空間不足，導致 Docker 無法下載所需的映像檔。
+        - **解決方案 (Solution):** 執行 Docker 內建的清理指令，釋放由未使用容器、網路和映像檔佔用的空間。
+          ```bash
+          docker system prune -a
+          ```
 
 - [ ] **任務 1.3: 啟動並設定 Minikube**
     - **技術細節:**

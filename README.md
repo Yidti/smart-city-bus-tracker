@@ -19,7 +19,7 @@
 ### Phase 1: 本地環境建置 (Local Environment Setup)
 
 - [ ] **任務 1.1:** 安裝本地開發核心工具 (Docker, Minikube, kubectl, Helm)。
-- [ ] **任務 1.2:** 使用 Docker Compose 建立核心數據服務 (Kafka, Airflow, MongoDB 等)。
+- [x] **任務 1.2:** 使用 Docker Compose 建立核心數據服務 (Kafka, Airflow, MongoDB 等)。
 - [ ] **任務 1.3:** 啟動並設定 Minikube 叢集。
 - [ ] **任務 1.4 (可選):** 撰寫 Terraform 腳本 (純學習，不執行)。
 
