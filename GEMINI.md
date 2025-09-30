@@ -20,7 +20,7 @@
 
 ### Phase 1: 本地環境建置 (Local Environment Setup)
 
-- [ ] **任務 1.1: 安裝本地開發核心工具**
+- [x] **任務 1.1: 安裝本地開發核心工具**
     - **技術細節:**
         - **Docker Desktop:** 提供本機運行的 Docker 引擎，是運行所有容器化應用的基礎。
         - **Minikube:** 在 Docker 之上，建立一個單節點的 Kubernetes 叢集，讓我們可以模擬雲端 K8s 環境。
@@ -28,9 +28,23 @@
         - **Helm:** Kubernetes 的套件管理器，簡化應用的部署。
     - **實作思路:**
         1.  根據您的作業系統，安裝 Docker Desktop。
-        2.  安裝 kubectl CLI。
-        3.  安裝 Minikube CLI。
-        4.  安裝 Helm CLI。
+        2.  在 macOS 上，推薦使用 Homebrew 來安裝命令列工具。如果尚未安裝，可執行 `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` 來安裝。
+        3.  安裝 kubectl CLI: `brew install kubectl`
+        4.  安裝 Minikube CLI: `brew install minikube`
+        5.  安裝 Helm CLI: `brew install helm`
+    - **執行紀錄與除錯 (Execution & Debugging Log):**
+        - **問題 (Problem):** 執行 `minikube start` 時，出現 `minikube: command not found` 錯誤。
+        - **原因 (Cause):** 未安裝 Minikube。
+        - **解決方案 (Solution):** 透過 Homebrew 安裝 Minikube。
+          ```bash
+          brew install minikube
+          ```
+        - **問題 (Problem):** 執行 `brew install minikube` 時，出現 `Error: You have not agreed to the Xcode license` 錯誤。
+        - **原因 (Cause):** Homebrew 依賴的 Xcode Command Line Tools 需要使用者同意其授權條款後才能使用。
+        - **解決方案 (Solution):** 執行 Xcode 授權同意指令。
+          ```bash
+          sudo xcodebuild -license accept
+          ```
 
 - [x] **任務 1.2: 使用 Docker Compose 建立核心數據服務**
     - **技術細節:**
@@ -57,8 +71,11 @@
           ```bash
           docker system prune -a
           ```
+        - **問題 (Problem):** 執行 `docker compose up` 時，服務卡在啟動過程，沒有反應。
+        - **原因 (Cause):** 極有可能是 `docker-compose.yml` 中定義的端口 (例如 Airflow 的 8080) 已被本機上其他正在運行的程式 (尤其是其他 Docker 容器) 佔用，造成端口衝突。
+        - **解決方案 (Solution):** 使用 `lsof -i :<端口號>` 指令檢查端口是否被佔用。確認後，停止對應的程式或 Docker 容器 (`docker stop <容器ID>`)。
 
-- [ ] **任務 1.3: 啟動並設定 Minikube**
+- [x] **任務 1.3: 啟動並設定 Minikube**
     - **技術細節:**
         - Minikube 會在您的 Docker 中建立一個名為 `minikube` 的容器，這個容器就是您的 K8s 叢集。
     - **實作思路:**
